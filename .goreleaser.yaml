@@ -1,0 +1,81 @@
+version: 2
+
+project_name: tr2rl
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: tr2rl
+    binary: tr2rl
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - windows
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    # this name template makes the tarball name match common conventions
+    # e.g. tr2rl_1.0.0_Linux_x86_64.tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+# Homebrew (macOS/Linux)
+brews:
+  - name: tr2rl
+    repository:
+      owner: tr2rl
+      name: homebrew-tr2rl
+    homepage: "https://github.com/tr2rl/tr2rl"
+    description: "The missing bridge between AI prompts and the filesystem"
+
+# Scoop (Windows)
+scoops:
+  - repository:
+      owner: tr2rl
+      name: scoop-bucket
+    homepage: "https://github.com/tr2rl/tr2rl"
+    description: "Turn messy text trees into real files"
+    license: "MIT"
+
+# Note: Snapcraft (Linux Store) configuration requires a snapcraft.yaml login, 
+# but GoReleaser can generate the metadata.
+# snaps:
+#   - name: tr2rl
+#     summary: Turn messy text trees into real files
+#     publish: true
+
+# Release via GitHub Releases is enabled by default.
+releases:
+  - github:
+      owner: tr2rl
+      name: tr2rl
+    draft: false
+    prerelease: auto

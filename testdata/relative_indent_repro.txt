@@ -1,0 +1,10 @@
+c proj
+    src
+        hellow.c
+    header
+      hellow.h
+    
+    src1
+       hellow1.c
+    header1
+      hellow1.h
