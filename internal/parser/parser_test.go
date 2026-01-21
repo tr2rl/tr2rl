@@ -85,3 +85,36 @@ src\utils\helper.go
 		})
 	}
 }
+
+func TestParse_AllTestData(t *testing.T) {
+	// Comprehensive "Smoke Test" for all test data files
+	files, err := filepath.Glob("../../testdata/*")
+	if err != nil {
+		t.Fatalf("Failed to list testdata: %v", err)
+	}
+
+	for _, f := range files {
+		if filepath.Ext(f) != ".txt" && filepath.Ext(f) != ".tree" {
+			continue
+		}
+
+		t.Run(filepath.Base(f), func(t *testing.T) {
+			content, err := os.ReadFile(f)
+			if err != nil {
+				t.Fatalf("Failed to read file: %v", err)
+			}
+
+			// Just verify it doesn't panic and returns a result
+			res := Parse(string(content))
+
+			// Most test files should have at least 1 node
+			// Exception: empty files or pure junk files (if any exist)
+			if len(res.Nodes) == 0 && len(string(content)) > 10 {
+				// If file is big but no nodes found, that's suspicious
+				// strictly speaking, some junk files might correctly return 0 nodes.
+				// But let's log it.
+				t.Logf("Warning: %s produced 0 nodes (parser might have filtered everything)", filepath.Base(f))
+			}
+		})
+	}
+}

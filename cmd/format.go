@@ -26,14 +26,18 @@ how tr2rl interprets your input.`,
 
 		res := parser.Parse(in)
 
-		// If we encounter parse errors, warning user might be nice,
-		// but typically format just does its best.
+		// Get style flag
+		style, _ := cmd.Flags().GetString("style")
 
-		printer.PrintTree(res.Nodes)
+		// Map simple flag to options
+		opts := printer.Options{Style: style}
+
+		printer.PrintTreeWithOptions(res.Nodes, opts)
 		return nil
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(formatCmd)
+	formatCmd.Flags().String("style", "unicode", "Output style: 'unicode' (default) or 'ascii'")
 }

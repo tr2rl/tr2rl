@@ -19,20 +19,20 @@ Input can be:
   - Clipboard (--clipboard)
 
 Safety:
-  - Defaults to DRY-RUN mode (preview only).
-  - Use --dry-run=false to actually create files.
+  - Defaults to WRITING files.
+  - Use --dry-run to preview changes safely.
   - Will NOT overwrite existing files unless --force is used.    
 
 Features:
   - --populate: Intelligently fills created files with boilerplate (e.g. package main for Go).`,
 	Example: `  # Preview what would happen
-  tr2rl build structure.txt
+  tr2rl build structure.txt --dry-run
 
   # Actually create files in ./my-output
-  tr2rl build structure.txt ./my-output --dry-run=false
+  tr2rl build structure.txt ./my-output
 
   # Create from clipboard and auto-fill content
-  tr2rl build --clipboard --populate --dry-run=false`,
+  tr2rl build --clipboard --populate`,
 	Args: cobra.MaximumNArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		in, err := readInputFromCmd(cmd, args[:min(1, len(args))])

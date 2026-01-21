@@ -11,69 +11,81 @@ import (
 
 // PrintTree constructs and prints a hierarchical Unicode tree from a flat list of nodes.
 // It handles directory grouping, sorting, and prefix generation (e.g., "├── ").
+// Options controls the output format of the tree.
+type Options struct {
+	Style string // "unicode" (default) or "ascii"
+}
+
+// PrintTree constructs and prints a hierarchical Unicode tree from a flat list of nodes.
 func PrintTree(nodes []parser.Node) {
+	PrintTreeWithOptions(nodes, Options{Style: "unicode"})
+}
+
+// PrintTreeWithOptions prints the tree with specific formatting options.
+func PrintTreeWithOptions(nodes []parser.Node, opts Options) {
 	if len(nodes) == 0 {
 		return
 	}
 
 	// 1. Build a Tree map structure for printing
-	// Map parent path -> list of children
 	childrenMap := make(map[string][]parser.Node)
 	roots := make([]parser.Node, 0)
-
-	// Track all paths to identify roots (items with no parent in the list)
-	// Actually, we can just use path.Dir() logic.
-	// But since input can be fragmented, we need to be careful.
-	// We'll rely on our parser's normalization which ensures full paths.
-
-	// First, find the common root or strictly top-level items.
-	// The parser outputs relative paths. "src/main.go" -> parent is "src".
-	// "src" -> parent is ".".
-
 	nodeMap := make(map[string]parser.Node)
+
 	for _, n := range nodes {
-		// Normalize: strip trailing slash for key
 		key := strings.TrimSuffix(n.Path, "/")
 		nodeMap[key] = n
 	}
 
 	for _, n := range nodes {
 		key := strings.TrimSuffix(n.Path, "/")
-		// parent := strings.TrimSuffix(path.Dir(key), "/") // wrong, path.Dir handles separators
-
-		// Manual parent finding to respect forward slashes universally
 		lastSlash := strings.LastIndex(key, "/")
 		if lastSlash == -1 {
-			// Top level
 			roots = append(roots, n)
 		} else {
 			parentPath := key[:lastSlash]
 			childrenMap[parentPath] = append(childrenMap[parentPath], n)
-
-			// If parent doesn't exist in our node list, we should probably print it implicitly?
-			// The parser should ideally have filled gaps, but if not:
-			// For now assume strictly parsed nodes.
 		}
 	}
 
-	// Sort roots
 	sortNodes(roots)
 
-	// Print recursively
 	for i, root := range roots {
-		printNode(root, "", i == len(roots)-1, childrenMap)
+		printNode(root, "", i == len(roots)-1, childrenMap, opts)
 	}
 }
 
-func printNode(node parser.Node, prefix string, isLast bool, childrenMap map[string][]parser.Node) {
-	// Prepare current line marker
-	marker := "├── "
-	if isLast {
-		marker = "└── "
+func printNode(node parser.Node, prefix string, isLast bool, childrenMap map[string][]parser.Node, opts Options) {
+	// Markers
+	var marker, link, noLink string
+	
+	if opts.Style == "ascii" {
+		// ASCII Style:
+		// |-- child
+		// |   `-- sub
+		// `-- last
+		if isLast {
+			marker = "`-- "
+		} else {
+			marker = "|-- "
+		}
+		link = "|   "
+		noLink = "    "
+	} else {
+		// Unicode Style (Default):
+		// ├── child
+		// │   └── sub
+		// └── last
+		if isLast {
+			marker = "└── "
+		} else {
+			marker = "├── "
+		}
+		link = "│   "
+		noLink = "    "
 	}
 
 	name := node.Path
-	// Extract basename
 	if idx := strings.LastIndex(strings.TrimSuffix(name, "/"), "/"); idx != -1 {
 		name = strings.TrimSuffix(name, "/")
 		name = name[idx+1:]
@@ -88,18 +100,17 @@ func printNode(node parser.Node, prefix string, isLast bool, childrenMap map[str
 	// Calculate prefix for children
 	childPrefix := prefix
 	if isLast {
-		childPrefix += "    "
+		childPrefix += noLink
 	} else {
-		childPrefix += "│   "
+		childPrefix += link
 	}
 
-	// Get children
 	key := strings.TrimSuffix(node.Path, "/")
 	children := childrenMap[key]
 	sortNodes(children)
 
 	for i, child := range children {
-		printNode(child, childPrefix, i == len(children)-1, childrenMap)
+		printNode(child, childPrefix, i == len(children)-1, childrenMap, opts)
 	}
 }
 

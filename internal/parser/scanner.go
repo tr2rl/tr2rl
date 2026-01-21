@@ -64,9 +64,8 @@ func ScanLines(input string) []LineInfo {
 			rest := expanded[idx+len(marker):]
 			info.CleanName = strings.TrimSpace(rest)
 		} else {
-			// Indented list fallback
 			leadingSpaces := len(expanded) - len(strings.TrimLeft(expanded, " "))
-			info.Indent = leadingSpaces / 4 // Assume 4 spaces per level for indent mode
+			info.Indent = leadingSpaces // Use raw space count (no divisor)
 			info.CleanName = trim
 		}
 

@@ -25,12 +25,30 @@
 
 ---
 
+## 🐣 Quick Start for Humans (Layman's Guide)
+
+**"I just want to create folders from ChatGPT."**
+1.  Copy the tree text from ChatGPT.
+2.  Open your terminal in the folder where you want the project.
+3.  Run: `tr2rl build --clipboard`
+
+**"I want to see what it will do BEFORE it creates files."**
+1.  Use the "Dry Run" flag:
+2.  Run: `tr2rl build --clipboard --dry-run`
+3.  It will print a list of "Would create..." lines. If it looks good, run it again without `--dry-run`.
+
+**"I have this messy text from a friend."**
+1.  Paste it into a file called `plan.txt`.
+2.  Run: `tr2rl build plan.txt`
+
+---
+
 ## ✨ Features
 
 *   **🪄 Magic Parsing**: Smartly understands Unicode trees (`└──`), ASCII trees (`|--`), Indented lists, and even messy, mixed-format text.
 *   **🛠️ Build & Populate**: Creates directories and files instantly. Can auto-fill files with language-specific boilerplate (e.g., `package main` for Go).
 *   **🧹 Refine & Format**: Takes messy "napkin-sketch" text and formats it into a pristine, professional Unicode tree string.
-*   **🛡️ Safety First**: Defaults to `--dry-run`. You always see exactly what *would* happen before it touches your disk.
+*   **🛡️ Safety Preview**: Use `--dry-run` to see exactly what *would* happen before it touches your disk.
 *   **📋 Clipboard Mode**: Build or format directly from your system clipboard. No temporary files needed.
 *   **🚀 Zero Dependencies**: A single, static binary. Runs anywhere (Windows, macOS, Linux).
 
@@ -44,9 +62,10 @@ Here are some real-world commands to get you started.
 Build a complex project structure from a file, verifying it first.
 ```powershell
 # Preview what will be created (Dry Run)
-.\tr2rl.exe build testdata/grand_finale.tree
+.\tr2rl.exe build testdata/grand_finale.tree --dry-run
+
 # Actually create the structure
-.\tr2rl.exe build testdata/grand_finale.tree --dry-run=false
+.\tr2rl.exe build testdata/grand_finale.tree
 ```
 
 ### 2. Real-World Cookbooks
@@ -65,7 +84,7 @@ We've included production-ready architectures in the `examples/` folder.
 ### 3. Instant Clipboard Build
 Copy a tree from a chat window or website, then run:
 ```powershell
-.\tr2rl.exe build --clipboard --dry-run=false
+.\tr2rl.exe build --clipboard
 ```
 
 ### 3. Cleanup & Formatting
@@ -110,13 +129,13 @@ tr2rl build [file] [output-dir] [flags]
 ```
 
 **Flags:**
-*   `--dry-run`: (Default: `true`) Preview changes without writing to disk.
+*   `--dry-run`: Enable preview mode (do not write to disk). Default: `false`.
 *   `--force`: Overwrite existing files.
 *   `--populate`: Auto-fill created files with boilerplate content.
 *   `--clipboard`: Read input from clipboard instead of a file.
 
 ### `format`
-Reads messy input and outputs a clean, canonical Unicode tree. Great for documentation or cleaning up LLM outputs.
+Reads messy input and outputs a clean, canonical Unicode tree. Great for documentation.
 
 **Syntax:**
 ```bash
@@ -124,6 +143,7 @@ tr2rl format [file] [flags]
 ```
 
 **Flags:**
+*   `--style`: Output format. Options: `unicode` (default) or `ascii`.
 *   `--clipboard`: Read input from clipboard.
 
 ### `template`

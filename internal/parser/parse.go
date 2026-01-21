@@ -76,7 +76,7 @@ func Parse(input string) Result {
 	if isPathList {
 		result.Nodes = parsePathList(lines)
 	} else {
-		result.Nodes, result.Warnings = parseTree(lines, result.Warnings)
+		result.Nodes, result.Warnings = parseTree(lines, result.Warnings, markerCount == 0)
 	}
 
 	// Normalize Output
@@ -121,7 +121,7 @@ func parsePathList(lines []LineInfo) []Node {
 	return nodes
 }
 
-func parseTree(lines []LineInfo, warnings []string) ([]Node, []string) {
+func parseTree(lines []LineInfo, warnings []string, indentedListMode bool) ([]Node, []string) {
 	// Root Handling: Check if first line is a root
 	// A line is ROOT if:
 	// 1. Depth is 0 (or very low compared to next)
@@ -156,31 +156,26 @@ func parseTree(lines []LineInfo, warnings []string) ([]Node, []string) {
 	}
 
 	// Initialize state
-	prevIndent := -1
+	// We track:
+	// 1. stack: names of current path components ["root", "src"]
+	// 2. indentStack: indentation values for each component [0, 4]
+
+	indentStack := make([]int, 0, 32)
+
 	if rootIdx == 0 {
 		// We have a declared root
 		rootName := strings.TrimSuffix(lines[0].CleanName, "/")
 		stack = append(stack, rootName)
+		indentStack = append(indentStack, lines[0].Indent)
 		nodes = append(nodes, Node{Path: rootName, Kind: Dir})
-		prevIndent = lines[0].Indent
 		// Start processing children from index 1
 		lines = lines[1:]
 	} else {
-		// Implicit root (current directory), start from 0
-		prevIndent = -1
+		// Implicit root (current directory)
+		// We behave as if there is a root at Indent = -1
+		// So first item (Indent >= 0) becomes a child of it.
+		// No item pushed to stack yet.
 	}
-	// Determine Indent Offset for Flat Roots
-	// If explicit root exists (Indent 0) and first child is also Indent 0,
-	// we need to shift all children by +1 so they nest inside root.
-	indentOffset := 0
-	if rootIdx == 0 && len(lines) > 0 {
-		firstChildIndent := lines[0].Indent
-		rootIndent := prevIndent // Captured from l0 before slicing
-		if firstChildIndent <= rootIndent {
-			indentOffset = 1 + (rootIndent - firstChildIndent)
-		}
-	}
-	prevRawIndent := -1
 
 	for _, l := range lines {
 		indent := l.Indent
@@ -190,69 +185,61 @@ func parseTree(lines []LineInfo, warnings []string) ([]Node, []string) {
 			continue
 		}
 
-		// 2. Junk Filter: If it has spaces, isn't a known file, and isn't path-like, skip it.
+		// 2. Junk Filter
 		// EXCEPTION: If it has a valid marker, TRUST IT.
-		if l.Marker == "" && !l.IsPathLike && strings.Contains(name, " ") && !looksLikeFile(name) {
-			// Special check: sometimes "Program Files" is valid?
-			// But "random garbage line" is not.
-			// If it has NO extension and DOES have spaces, assume junk unless flagged otherwise.
-			// warnings = append(warnings, fmt.Sprintf("Skipping potential junk line: '%s'", l.Raw))
+		// EXCEPTION: If we are in Indented List Mode (no markers at all), TRUST IT.
+		if !indentedListMode && l.Marker == "" && !l.IsPathLike && strings.Contains(name, " ") && !looksLikeFile(name) {
 			continue
 		}
 
-		// Forgiving Jump Protection logic fixed:
-		// If we clamped the previous line, we must respect that for siblings.
-		// If current RawIndent == PrevRawIndent, then LogicalIndent must be PrevLogicalIndent.
+		// RELATIVE INDENTATION LOGIC:
+		// Pop the stack until we find a parent with strictly LESS indentation than current line.
+		// Or until stack is empty (if implicit root).
 
-		if l.Indent == prevRawIndent {
-			indent = prevIndent
-		} else {
-			// Normal clamp
-			if indent > prevIndent+1 {
-				indent = prevIndent + 1
-			}
-		}
+		// If explicit root exists, we must NOT pop the root (index 0).
+		// The root acts as Indent=-Infinity effectively, but practically it has an indent (e.g. 0).
+		// Children must have Indent > RootIndent.
 
-		// Effective Indent: apply offset for flat roots
-		effectiveIndent := indent + indentOffset
-
-		// ... stack logic ...
-		targetStackLen := effectiveIndent
-
+		minStackSize := 0
 		if rootIdx == 0 {
-			// If we have an explicit root, we must never pop it off the stack.
-			// The root is always at stack[0], so stack len must be at least 1.
-			if targetStackLen < 1 {
-				targetStackLen = 1
+			minStackSize = 1
+		}
+
+		for len(stack) > minStackSize {
+			topIndent := indentStack[len(indentStack)-1]
+			if topIndent >= indent {
+				// Current line is same level or shallower -> Pop to find sibling/parent
+				stack = stack[:len(stack)-1]
+				indentStack = indentStack[:len(indentStack)-1]
+			} else {
+				// Top indent < Current indent -> Top is Parent. Stop popping.
+				break
 			}
 		}
 
-		if targetStackLen < 0 {
-			targetStackLen = 0
-		}
+		// If rootIdx==0 and we popped everything down to root,
+		// we verify current indent > root indent.
+		// If not, it technically shouldn't be a child, but standard behavior is to just add it to root?
+		// Or it's a sibling of root? (Impossible in single-root tree).
+		// Let's assume everything else is child of root.
 
-		for len(stack) > targetStackLen {
-			stack = stack[:len(stack)-1]
-		}
+		// Append current
+		stack = append(stack, name)
+		indentStack = append(indentStack, indent)
 
-		// Infer Kind
+		// Determine Kind
 		kind := File
 		if isDirLike(name) {
 			kind = Dir
 			name = strings.TrimSuffix(name, "/")
 		} else {
-			// Lookahead check could go here
 			if !looksLikeFile(name) {
-				// default to file for safety
+				// default to file
 			}
 		}
 
-		stack = append(stack, name)
 		fullPath := path.Join(stack...)
 		nodes = append(nodes, Node{Path: fullPath, Kind: kind})
-
-		prevIndent = indent
-		prevRawIndent = l.Indent
 	}
 
 	// Post-pass: Fix "File" that became a parent
