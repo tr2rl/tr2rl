@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/tr2rl/tr2rl/internal/parser"
-	"github.com/tr2rl/tr2rl/internal/printer"
+	"github.com/cytificlabs/tr2rl/internal/parser"
+	"github.com/cytificlabs/tr2rl/internal/printer"
 )
 
 var formatCmd = &cobra.Command{

@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/tr2rl/tr2rl/internal/parser"
+	"github.com/cytificlabs/tr2rl/internal/parser"
 )
 
 // PrintTree constructs and prints a hierarchical Unicode tree from a flat list of nodes.

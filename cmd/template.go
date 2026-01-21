@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
-	"github.com/tr2rl/tr2rl/internal/templates"
+	"github.com/cytificlabs/tr2rl/internal/templates"
 )
 
 var templateCmd = &cobra.Command{

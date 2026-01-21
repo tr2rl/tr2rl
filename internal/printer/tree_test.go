@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/tr2rl/tr2rl/internal/parser"
+	"github.com/cytificlabs/tr2rl/internal/parser"
 )
 
 func captureOutput(f func()) string {

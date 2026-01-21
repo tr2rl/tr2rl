@@ -8,8 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tr2rl/tr2rl/internal/content"
-	"github.com/tr2rl/tr2rl/internal/parser"
+	"github.com/cytificlabs/tr2rl/internal/content"
+	"github.com/cytificlabs/tr2rl/internal/parser"
 )
 
 type ApplyOptions struct {

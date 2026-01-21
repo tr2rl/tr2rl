@@ -1,4 +1,4 @@
-module github.com/tr2rl/tr2rl
+module github.com/cytificlabs/tr2rl
 
 go 1.23
 

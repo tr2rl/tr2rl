@@ -7,7 +7,7 @@ First off, thanks for taking the time to contribute! 🚀
 ## 🛠️ Development Setup
 
 1.  **Prerequisites**: Go 1.21+
-2.  **Clone**: `git clone https://github.com/tr2rl/tr2rl`
+2.  **Clone**: `git clone https://github.com/cytificlabs/tr2rl`
 3.  **Run**: `go run main.go --help`
 
 ## 📂 Project Structure

@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/tr2rl/tr2rl/internal/clipboard"
+	"github.com/cytificlabs/tr2rl/internal/clipboard"
 )
 
 // Helper to standardise input reading

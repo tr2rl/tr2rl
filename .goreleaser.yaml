@@ -51,17 +51,17 @@ changelog:
 brews:
   - name: tr2rl
     repository:
-      owner: tr2rl
+      owner: cytificlabs
       name: homebrew-tr2rl
-    homepage: "https://github.com/tr2rl/tr2rl"
+    homepage: "https://github.com/cytificlabs/tr2rl"
     description: "The missing bridge between AI prompts and the filesystem"
 
 # Scoop (Windows)
 scoops:
   - repository:
-      owner: tr2rl
+      owner: cytificlabs
       name: scoop-bucket
-    homepage: "https://github.com/tr2rl/tr2rl"
+    homepage: "https://github.com/cytificlabs/tr2rl"
     description: "Turn messy text trees into real files"
     license: "MIT"
 
@@ -75,7 +75,7 @@ scoops:
 # Release via GitHub Releases is enabled by default.
 releases:
   - github:
-      owner: tr2rl
+      owner: cytificlabs
       name: tr2rl
     draft: false
     prerelease: auto

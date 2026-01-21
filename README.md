@@ -7,8 +7,8 @@
 *Build structures from scratch. Refine messy inputs. Automate your setup.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Go Report Card](https://goreportcard.com/badge/github.com/tr2rl/tr2rl?style=flat-square)](https://goreportcard.com/report/github.com/tr2rl/tr2rl)
-[![Release](https://img.shields.io/github/v/release/tr2rl/tr2rl?style=flat-square&color=blue)](https://github.com/tr2rl/tr2rl/releases)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cytificlabs/tr2rl?style=flat-square)](https://goreportcard.com/report/github.com/cytificlabs/tr2rl)
+[![Release](https://img.shields.io/github/v/release/cytificlabs/tr2rl?style=flat-square&color=blue)](https://github.com/cytificlabs/tr2rl/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 [Features](#-features) • [Installation](#-installation) • [Examples](#-examples) • [Usage](#-usage) • [Contributing](#-contributing)
@@ -114,7 +114,7 @@ Turn a messy text file into a clean, shareable tree diagram.
 ## 📦 Installation
 
 ### Option 1: Pre-compiled Binaries (Recommended)
-Download the latest binary for your OS from the [**Releases Page**](https://github.com/tr2rl/tr2rl/releases).
+Download the latest binary for your OS from the [**Releases Page**](https://github.com/cytificlabs/tr2rl/releases).
 
 | OS | Installation |
 |:---|:---|
@@ -123,7 +123,7 @@ Download the latest binary for your OS from the [**Releases Page**](https://gith
 
 ### Option 2: Build from Source
 ```bash
-git clone https://github.com/tr2rl/tr2rl.git
+git clone https://github.com/cytificlabs/tr2rl.git
 cd tr2rl
 go build -o tr2rl.exe .
 ```
@@ -199,7 +199,6 @@ If `tr2rl` saved you time, consider supporting the development!
 
 *   ⭐ **Star this repo**: It helps others find the tool.
 *   ☕ **Buy me a coffee**: https://ko-fi.com/cosmicquark
-*   💖 **GitHub Sponsors**: [Sponsors Link Placeholder]
 *   🗣️ **Share it**: Tell your friends or tweet about it!
 
 ---
