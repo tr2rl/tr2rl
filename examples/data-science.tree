@@ -1,0 +1,32 @@
+# A production-ready Python Data Science project structure
+# usage: tr2rl build examples/data-science.tree ./analysis
+
+covid-analysis/
+├── data/
+│   ├── raw/
+│   │   └── .gitkeep
+│   ├── processed/
+│   │   └── cleaned_data.csv
+│   └── external/
+├── notebooks/
+│   ├── 01_exploration.ipynb
+│   ├── 02_preprocessing.ipynb
+│   └── 03_modeling.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── data/
+│   │   ├── make_dataset.py
+│   │   └── download.py
+│   ├── features/
+│   │   └── build_features.py
+│   ├── models/
+│   │   ├── train_model.py
+│   │   └── predict_model.py
+│   └── visualization/
+│       └── visualize.py
+├── tests/
+│   └── test_data.py
+├── requirements.txt
+├── Makefile
+├── setup.py
+└── README.md

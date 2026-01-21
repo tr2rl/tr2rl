@@ -1,0 +1,31 @@
+# A modern Microservices architecture with Kubernetes and Docker
+# Ideally run: tr2rl build examples/microservices-k8s.tree ./my-cluster --populate
+
+platform-root/
+├── api-gateway/
+│   ├── Dockerfile
+│   ├── go.mod
+│   └── main.go
+├── auth-service/
+│   ├── src/
+│   │   ├── users/
+│   │   │   ├── user_controller.js
+│   │   │   └── user_model.js
+│   │   └── index.js
+│   └── package.json
+├── payment-service/
+│   ├── pom.xml
+│   └── src/main/java/com/payments/App.java
+├── k8s/
+│   ├── base/
+│   │   ├── deployment.yaml
+│   │   └── service.yaml
+│   └── overlays/
+│       ├── dev/
+│       │   └── kustomization.yaml
+│       └── prod/
+│           └── kustomization.yaml
+├── scripts/
+│   ├── deploy.sh
+│   └── teardown.sh
+└── README.md

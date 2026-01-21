@@ -1,51 +1,82 @@
 <div align="center">
 
-# 📂 tr2rl
-### (Trees to Reality)
+# 🌳 tr2rl
+### (Tree to Reality)
 
-**The missing bridge between AI prompts and your filesystem.**
+**The CLI utility that bridges the gap between text and filesystem.**
+*Build structures from scratch. Refine messy inputs. Automate your setup.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Go Report Card](https://goreportcard.com/badge/github.com/tr2rl/tr2rl?style=flat-square)](https://goreportcard.com/report/github.com/tr2rl/tr2rl)
 [![Release](https://img.shields.io/github/v/release/tr2rl/tr2rl?style=flat-square&color=blue)](https://github.com/tr2rl/tr2rl/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Comparison](#-comparison) • [Contributing](#-contributing)
+[Features](#-features) • [Installation](#-installation) • [Examples](#-examples) • [Usage](#-usage) • [Contributing](#-contributing)
 
 </div>
 
 ---
 
-> **The Problem:** You ask ChatGPT for a project architecture. It gives you a beautiful ASCII tree. You stare at it, sigh, and start manually running `mkdir` and `touch` for 10 minutes.
+> **The Scenario:** You're sketching a project architecture in a text file, or maybe ChatGPT just generated a perfect folder structure for you. 
 >
-> **The Solution:** Copy the tree. Run `tr2rl`. Done in 1 second.
-
-![Demo GIF](https://via.placeholder.com/800x400?text=Place+Your+Demo+GIF+Here)
-*(Example: Copying a tree from ChatGPT and running `tr2rl build --clipboard`)*
+> **The Problem:** Manually creating specifically nested folders and files is tedious, error-prone, and slow.
+>
+> **The Solution:** Feed that text into **tr2rl**. It parses seemingly "broken" or "messy" trees and instantly builds the real file structure for you.
 
 ---
 
 ## ✨ Features
 
-**tr2rl** is a robust, single-binary CLI tool designed to be **"unbreakable"**.
+*   **🪄 Magic Parsing**: Smartly understands Unicode trees (`└──`), ASCII trees (`|--`), Indented lists, and even messy, mixed-format text.
+*   **🛠️ Build & Populate**: Creates directories and files instantly. Can auto-fill files with language-specific boilerplate (e.g., `package main` for Go).
+*   **🧹 Refine & Format**: Takes messy "napkin-sketch" text and formats it into a pristine, professional Unicode tree string.
+*   **🛡️ Safety First**: Defaults to `--dry-run`. You always see exactly what *would* happen before it touches your disk.
+*   **📋 Clipboard Mode**: Build or format directly from your system clipboard. No temporary files needed.
+*   **🚀 Zero Dependencies**: A single, static binary. Runs anywhere (Windows, macOS, Linux).
 
-* **🧠 Magic Parsing**
-    Smartly understands Unicode trees (`└──`), ASCII trees (`|--`), indented lists, and path lists. It handles mixed indentation and "broken" text gracefully.
+---
 
-* **🛡️ Safety First**
-    Defaults to `--dry-run`. You will always see a preview of what files will be created before any changes are written to disk.
+## 🚀 Examples
 
-* **📋 Clipboard Mode**
-    No intermediate files needed. `tr2rl build --clipboard` reads directly from your system's copy buffer.
+Here are some real-world commands to get you started.
 
-* **📝 Auto-Populator**
-    Don't just create empty files. Use `--populate` to auto-fill files with boilerplate content (e.g., adds `package main` to `.go` files, HTML skeletons to `.html`).
+### 1. The "Grand Finale" Build
+Build a complex project structure from a file, verifying it first.
+```powershell
+# Preview what will be created (Dry Run)
+.\tr2rl.exe build testdata/grand_finale.tree
+# Actually create the structure
+.\tr2rl.exe build testdata/grand_finale.tree --dry-run=false
+```
 
-* **🏗️ Template Registry**
-    Spin up standard environments instantly with built-in blueprints for React, Go, Python, and more.
+### 2. Real-World Cookbooks
+We've included production-ready architectures in the `examples/` folder.
+```powershell
+# Microservices with K8s & Docker
+.\tr2rl.exe build examples/microservices-k8s.tree ./my-cluster --populate
 
-* **🚀 Zero Dependencies**
-    Written in Go. Distributed as a single, static binary for Windows, Mac, and Linux. No Node_modules or Python venv required.
+# Next.js Fullstack (App Router, Tailwind, Supabase)
+.\tr2rl.exe build examples/nextjs-fullstack.tree ./my-app --populate
+
+# Python Data Science Project (Cookiecutter style)
+.\tr2rl.exe build examples/data-science.tree ./analysis --populate
+```
+
+### 3. Instant Clipboard Build
+Copy a tree from a chat window or website, then run:
+```powershell
+.\tr2rl.exe build --clipboard --dry-run=false
+```
+
+### 3. Cleanup & Formatting
+Turn a messy text file into a clean, shareable tree diagram.
+```powershell
+# Format a file
+.\tr2rl.exe format testdata/grand_finale.tree
+
+# Format text currently in your clipboard
+.\tr2rl.exe format --clipboard
+```
 
 ---
 
@@ -56,79 +87,79 @@ Download the latest binary for your OS from the [**Releases Page**](https://gith
 
 | OS | Installation |
 |:---|:---|
-| **Linux** | `wget [link-to-binary] && chmod +x tr2rl && sudo mv tr2rl /usr/local/bin/` |
-| **macOS** | Download binary, `chmod +x tr2rl`, and move to `/usr/local/bin/` |
-| **Windows** | Download `.exe` and add to your system `PATH` |
+| **Windows** | Download `.exe` and add to your system `PATH` (or run locally like `.\tr2rl.exe`) |
+| **Linux/Mac** | `chmod +x tr2rl` and move to `/usr/local/bin/` |
 
-### Option 2: Build from Source (Go)
-Requires Go 1.20+ installed.
+### Option 2: Build from Source
+```bash
+git clone https://github.com/tr2rl/tr2rl.git
+cd tr2rl
+go build -o tr2rl.exe .
+```
+
+---
+
+## 📖 Usage Guide
+
+### `build`
+Parses input text and creates the corresponding directory structure.
+
+**Syntax:**
+```bash
+tr2rl build [file] [output-dir] [flags]
+```
+
+**Flags:**
+*   `--dry-run`: (Default: `true`) Preview changes without writing to disk.
+*   `--force`: Overwrite existing files.
+*   `--populate`: Auto-fill created files with boilerplate content.
+*   `--clipboard`: Read input from clipboard instead of a file.
+
+### `format`
+Reads messy input and outputs a clean, canonical Unicode tree. Great for documentation or cleaning up LLM outputs.
+
+**Syntax:**
+```bash
+tr2rl format [file] [flags]
+```
+
+**Flags:**
+*   `--clipboard`: Read input from clipboard.
+
+### `template`
+View built-in project templates to quick-start your development.
 
 ```bash
-git clone [https://github.com/tr2rl/tr2rl.git](https://github.com/tr2rl/tr2rl.git)
-cd tr2rl
-go build -o tr2rl main.go
-
-
-🚀 Usage
-1. The "Speed Run" (Clipboard)
-Copy a directory tree text from ChatGPT, Claude, or DeepSeek, then run:
-# Preview the structure (Safe Mode)
-tr2rl build --clipboard
-
-# Create files and fill them with boilerplate
-tr2rl build --clipboard --populate --dry-run=false
-
-
-2. From a Text File
-If you have saved your structure to spec.txt:
-tr2rl build spec.txt ./output_directory
-
-
-3. Use Built-in Templates
-Don't have a tree? Use one of ours.
-# List available templates
+# List all templates
 tr2rl template list
 
-# Generate a React/Vite project
+# Use a template (pipe it to build)
 tr2rl template show react-vite | tr2rl build - ./my-app --dry-run=false
+```
 
+---
 
-4. Format & Clean Trees
-Turn a messy, hand-typed list into a clean, professional directory tree string (great for documentation).
-tr2rl format messy_list.txt
+## 🧩 Supported Input Formats
+tr2rl is context-aware and handles "noisy" input.
 
-🧩 Supported Formats
-tr2rl is context-aware. It automatically detects and parses these styles:
+| Style | Example Input |
+|:---|:---|
+| **Unicode Tree** | `├── src/` |
+| **ASCII Tree** | `|-- src/` or `+--- src/` |
+| **Indented List** | `  src` (just spaces) |
+| **Path List** | `root/src/main.go` |
 
-Style,Example Input
-Unicode Tree,├── src/└── main.go
-ASCII Tree,`
+---
 
+## 🤝 Contributing
+Contributions are welcome!
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes
+4. Push to the Branch
+5. Open a Pull Request
 
-🆚 Comparison
-Feature	📂 tr2rl	🐢 Shell Scripts	🌲 Other Tools
-Messy Input	✅ Magic Parser handles anything	❌ Fails on 1 wrong space	❌ Strict JSON required
-Safety	✅ Dry-Run by default	❌ Destructive immediately	⚠️ Varies
-Content	✅ Auto-populates boilerplate	❌ Creates empty files	❌ Directories only
-Portability	✅ Single Binary (No deps)	⚠️ Requires Bash environment	❌ Requires Node/Python
+---
 
-🤝 Contributing
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-Fork the Project
-
-Create your Feature Branch (git checkout -b feature/AmazingFeature)
-
-Commit your Changes (git commit -m 'Add some AmazingFeature')
-
-Push to the Branch (git push origin feature/AmazingFeature)
-
-Open a Pull Request
-
-📜 License
-Distributed under the MIT License. See LICENSE for more information.
-
-
-
-
-
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.

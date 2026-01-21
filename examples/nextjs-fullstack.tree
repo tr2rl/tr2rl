@@ -1,0 +1,36 @@
+# A scalable Next.js project structure with Tailwind and Supabase
+# usage: tr2rl build examples/nextjs-fullstack.tree ./my-app
+
+my-app/
+├── .env.local
+├── next.config.js
+├── package.json
+├── postcss.config.js
+├── tailwind.config.ts
+├── public/
+│   └── hero-image.png
+├── src/
+│   ├── app/
+│   │   ├── (auth)/
+│   │   │   ├── login/
+│   │   │   │   └── page.tsx
+│   │   │   └── register/
+│   │   │       └── page.tsx
+│   │   ├── dashboard/
+│   │   │   ├── layout.tsx
+│   │   │   └── page.tsx
+│   │   ├── api/
+│   │   │   └── route.ts
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── button.tsx
+│   │   │   └── card.tsx
+│   │   └── Navbar.tsx
+│   ├── lib/
+│   │   ├── supabase.ts
+│   │   └── utils.ts
+│   └── types/
+│       └── index.d.ts
+└── README.md
