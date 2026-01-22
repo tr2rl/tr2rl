@@ -122,15 +122,24 @@ Turn a messy text file into a clean, shareable tree diagram.
 
 ---
 
-## 📦 Installation
+## 📦 Installation Guide
 
-### Option 1: Pre-compiled Binaries (Recommended)
-Download the latest binary for your OS from the [**Releases Page**](https://github.com/cytificlabs/tr2rl/releases).
+### Option 1: Download Binaries (Recommended)
+Go to the [**Releases Page**](https://github.com/cytificlabs/tr2rl/releases) and download the file for your system:
 
-| OS | Installation |
-|:---|:---|
-| **Windows** | Download `.exe` and add to your system `PATH` (or run locally like `.\tr2rl.exe`) |
-| **Linux/Mac** | `chmod +x tr2rl` and move to `/usr/local/bin/` |
+| Cloud / OS | Architecture | File to Download | Notes |
+|:---|:---|:---|:---|
+| **Windows** | Intel/AMD (Standard) | `tr2rl_..._Windows_x86_64.zip` | Most common for PC/Laptop. |
+| **Windows** | ARM64 (Snapdragon) | `tr2rl_..._Windows_arm64.zip` | For Surface Pro X, etc. |
+| **macOS** | Apple Silicon (M1/M2/M3) | `tr2rl_..._Darwin_arm64.tar.gz` | Most new Macs. |
+| **macOS** | Intel | `tr2rl_..._Darwin_x86_64.tar.gz` | Older Macs. |
+| **Linux** | Intel/AMD | `tr2rl_..._Linux_x86_64.tar.gz` | Standard servers/desktops. |
+| **Linux** | ARM64 | `tr2rl_..._Linux_arm64.tar.gz` | Raspberry Pi 4/5, AWS Graviton. |
+
+**How to use:**
+1.  **Unzip/Extract** the downloaded file.
+2.  **Move** the `tr2rl` (or `tr2rl.exe`) binary to a folder in your system `PATH` (e.g., `/usr/local/bin` on Linux/Mac).
+3.  **Run** `tr2rl --version` to verify.
 
 ### Option 2: Build from Source
 ```bash
@@ -219,6 +228,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 <br>
 
-<div align="center">
-  <p>Made with ❤️ by <b>cosmicquark</b> and <b>Google Antigravity</b> for everyone.</p>
-</div>
