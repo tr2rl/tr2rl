@@ -19,8 +19,6 @@ It handles:
   - Path lists (search results)
   - Mixed/messy input with comments
 
-  - Mixed/messy input with comments
-
 Default behavior produces REAL changes. Use --dry-run to preview.`,
 	Example: `  # Build from a file
   tr2rl build spec.txt
