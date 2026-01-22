@@ -56,7 +56,7 @@ brews:
       owner: cytificlabs
       name: homebrew-tr2rl
     homepage: "https://github.com/cytificlabs/tr2rl"
-    description: "The missing bridge between AI prompts and the filesystem"
+    description: "Turn messy text lists, ASCII trees, and indented outlines into real project/directory structures instantly into desired path."
 
 # Scoop (Windows)
 scoops:
@@ -64,15 +64,15 @@ scoops:
       owner: cytificlabs
       name: scoop-bucket
     homepage: "https://github.com/cytificlabs/tr2rl"
-    description: "Turn messy text trees into real files"
+    description: "Turn messy text lists, ASCII trees, and indented outlines into real project/directory structures instantly into desired path."
     license: "MIT"
 
 # Note: Snapcraft (Linux Store) configuration requires a snapcraft.yaml login, 
 # but GoReleaser can generate the metadata.
-snaps:
-  - name: tr2rl
-    summary: Turn messy text trees into real files
-    publish: false
+# snaps:
+#   - name: tr2rl
+#     summary: Turn messy text trees into real files
+#     publish: false
 
 # Release via GitHub Releases is enabled by default.
 # Release via GitHub Releases is enabled by default.

@@ -3,7 +3,7 @@
 # 🌳 tr2rl 🗄️
 ### (Tree to Reality)
 
-**The CLI utility that bridges the gap between text and filesystem.**
+**The CLI utility that turns messy text, directory trees, and indented outlines into real project or directory structures.**
 *Build structures from scratch. Refine messy inputs. Automate your setup.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
